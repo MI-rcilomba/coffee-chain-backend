@@ -44,4 +44,20 @@ describe('Blockchain mining', () => {
     expect(minedBlock.hash.startsWith('0'.repeat(difficulty))).toBe(true);
     expect(minedBlock.nonce).toBeGreaterThanOrEqual(0);
   });
+
+  describe('Blockchain structure', () => {
+    it('starts with a genesis block and an empty pending transaction list', () => {
+      const blockchain = new Blockchain();
+
+      expect(blockchain.chain).toHaveLength(1);
+      expect(blockchain.pendingTransactions).toEqual([]);
+
+      const genesisBlock = blockchain.chain[0];
+
+      expect(genesisBlock.index).toBe(0);
+      expect(genesisBlock.transactions).toEqual([]);
+      expect(genesisBlock.previousHash).toBe('0');
+      expect(genesisBlock.hash).toHaveLength(64);
+    });
+  });
 });
