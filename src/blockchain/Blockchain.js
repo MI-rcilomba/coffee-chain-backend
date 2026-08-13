@@ -1,6 +1,26 @@
 import crypto from 'crypto';
 
 export class Blockchain {
+  constructor() {
+    this.chain = [this.createGenesisBlock()];
+    this.pendingTransactions = [];
+  }
+
+  createGenesisBlock() {
+    const genesisBlock = {
+      index: 0,
+      timestamp: new Date().toISOString(),
+      transactions: [],
+      previousHash: '0',
+      nonce: 0,
+      hash: '',
+    };
+
+    genesisBlock.hash = this.calculateHash(genesisBlock);
+
+    return genesisBlock;
+  }
+
   calculateHash(block) {
     const blockData =
       block.index +
