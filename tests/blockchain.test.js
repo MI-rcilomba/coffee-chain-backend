@@ -17,3 +17,31 @@ describe('Blockchain hashing', () => {
     expect(hash).toMatch(/^[a-f0-9]+$/);
   });
 });
+
+describe('Blockchain mining', () => {
+  it('mines a block with a hash that starts with the required number of zeroes', () => {
+    const blockchain = new Blockchain();
+    const difficulty = 2;
+
+    const block = {
+      index: 1,
+      timestamp: '2026-08-13T10:00:00.000Z',
+      transactions: [
+        {
+          sender: 'Farm A',
+          recipient: 'Roastery B',
+          batchId: 'BATCH-001',
+          weightKg: 25,
+        },
+      ],
+      previousHash: 'abc123',
+      nonce: 0,
+      hash: '',
+    };
+
+    const minedBlock = blockchain.mineBlock(block, difficulty);
+
+    expect(minedBlock.hash.startsWith('0'.repeat(difficulty))).toBe(true);
+    expect(minedBlock.nonce).toBeGreaterThanOrEqual(0);
+  });
+});
