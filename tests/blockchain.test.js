@@ -60,4 +60,22 @@ describe('Blockchain mining', () => {
       expect(genesisBlock.hash).toHaveLength(64);
     });
   });
+
+  describe('Blockchain transactions', () => {
+    it('adds a transaction to the pending transactions list', () => {
+      const blockchain = new Blockchain();
+
+      const transaction = {
+        sender: 'Farm A',
+        recipient: 'Roastery B',
+        batchId: 'BATCH-001',
+        weightKg: 25,
+      };
+
+      blockchain.addTransaction(transaction);
+
+      expect(blockchain.pendingTransactions).toHaveLength(1);
+      expect(blockchain.pendingTransactions[0]).toEqual(transaction);
+    });
+  });
 });
