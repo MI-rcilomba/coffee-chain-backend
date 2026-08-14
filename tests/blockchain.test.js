@@ -78,4 +78,28 @@ describe('Blockchain mining', () => {
       expect(blockchain.pendingTransactions[0]).toEqual(transaction);
     });
   });
+
+  describe('Mining pending transactions', () => {
+    it('mines pending transactions into a new block and clears the pending list', () => {
+      const blockchain = new Blockchain();
+
+      const transaction = {
+        sender: 'Farm A',
+        recipient: 'Roastery B',
+        batchId: 'BATCH-001',
+        weightKg: 25,
+      };
+
+      blockchain.addTransaction(transaction);
+
+      const minedBlock = blockchain.minePendingTransactions();
+
+      expect(blockchain.chain).toHaveLength(2);
+      expect(minedBlock.index).toBe(1);
+      expect(minedBlock.transactions).toEqual([transaction]);
+      expect(minedBlock.previousHash).toBe(blockchain.chain[0].hash);
+      expect(minedBlock.hash.startsWith('0')).toBe(true);
+      expect(blockchain.pendingTransactions).toEqual([]);
+    });
+  });
 });
