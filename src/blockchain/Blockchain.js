@@ -4,6 +4,7 @@ export class Blockchain {
   constructor() {
     this.chain = [this.createGenesisBlock()];
     this.pendingTransactions = [];
+    this.difficulty = process.env.NODE_ENV === 'test' ? 1 : 2;
   }
 
   createGenesisBlock() {
@@ -45,5 +46,29 @@ export class Blockchain {
 
   addTransaction(transaction) {
     this.pendingTransactions.push(transaction);
+  }
+
+  getLatestBlock() {
+    return this.chain[this.chain.length - 1];
+  }
+
+  minePendingTransactions() {
+    const latestBlock = this.getLatestBlock();
+
+    const newBlock = {
+      index: this.chain.length,
+      timestamp: new Date().toISOString(),
+      transactions: this.pendingTransactions,
+      previousHash: latestBlock.hash,
+      nonce: 0,
+      hash: '',
+    };
+
+    const minedBlock = this.mineBlock(newBlock, this.difficulty);
+
+    this.chain.push(minedBlock);
+    this.pendingTransactions = [];
+
+    return minedBlock;
   }
 }
