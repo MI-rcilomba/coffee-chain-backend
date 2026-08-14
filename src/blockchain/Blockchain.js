@@ -42,4 +42,8 @@ export class Blockchain {
 
     return block;
   }
+
+  addTransaction(transaction) {
+    this.pendingTransactions.push(transaction);
+  }
 }
