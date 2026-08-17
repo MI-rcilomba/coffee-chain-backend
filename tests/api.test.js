@@ -1,8 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import request from 'supertest';
-import { app } from '../src/app.js';
+import { createApp } from '../src/app.js';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('Blockchain API', () => {
+  let app;
+
+  beforeEach(() => {
+    app = createApp();
+  });
+
   it('returns the blockchain', async () => {
     const response = await request(app).get('/blockchain');
 
