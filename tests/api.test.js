@@ -10,4 +10,19 @@ describe('Blockchain API', () => {
     expect(response.body.chain).toHaveLength(1);
     expect(response.body.pendingTransactions).toEqual([]);
   });
+
+  it('adds a transaction through the API', async () => {
+    const transaction = {
+      sender: 'Farm A',
+      recipient: 'Roastery B',
+      batchId: 'BATCH-001',
+      weightKg: 25,
+    };
+
+    const response = await request(app).post('/transactions').send(transaction);
+
+    expect(response.status).toBe(201);
+    expect(response.body.message).toBe('Transaction added');
+    expect(response.body.transaction).toEqual(transaction);
+  });
 });
