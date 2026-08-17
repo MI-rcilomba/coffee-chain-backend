@@ -25,4 +25,23 @@ describe('Blockchain API', () => {
     expect(response.body.message).toBe('Transaction added');
     expect(response.body.transaction).toEqual(transaction);
   });
+
+  it('mines pending transactions through the API', async () => {
+    const transaction = {
+      sender: 'Farm A',
+      recipient: 'Cafe C',
+      batchId: 'BATCH-002',
+      weightKg: 10,
+    };
+
+    await request(app).post('/transactions').send(transaction);
+
+    const response = await request(app).post('/mine');
+
+    expect(response.status).toBe(201);
+    expect(response.body.message).toBe('Block mined');
+    expect(response.body.block.index).toBeGreaterThan(0);
+    expect(response.body.block.transactions).toEqual([transaction]);
+    expect(response.body.block.hash.startsWith('0')).toBe(true);
+  });
 });
