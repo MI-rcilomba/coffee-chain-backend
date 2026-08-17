@@ -51,4 +51,21 @@ describe('Blockchain API', () => {
     expect(response.body.block.transactions).toEqual([transaction]);
     expect(response.body.block.hash.startsWith('0')).toBe(true);
   });
+
+  it('rejects transactions without a batchId', async () => {
+    const invalidTransaction = {
+      sender: 'Farm A',
+      recipient: 'Roastery B',
+      weightKg: 25,
+    };
+
+    const response = await request(app)
+      .post('/transactions')
+      .send(invalidTransaction);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe(
+      'Transaction must include sender, recipient, batchId and weightKg',
+    );
+  });
 });
