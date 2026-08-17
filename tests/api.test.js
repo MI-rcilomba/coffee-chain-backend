@@ -1,7 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../src/app.js';
-import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('Blockchain API', () => {
   let app;
